@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:fencegate/objects/Board.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatelessWidget {
@@ -5,30 +8,27 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    var board = Board.fromLevelNumber(2);
+
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.blueAccent,
-                      Colors.red
-                    ]
-                ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Image.asset("res/icons/fondo.png"),
+          Center(
+            child: StreamBuilder(stream:board.controller.stream,builder: (c,s){
+              Future.delayed(Duration(seconds: Random().nextInt(3)+2)).whenComplete(() => board.shuffle());
+              if(s.hasData){
+                board.block();
+                return s.data as Widget;
+              }
+              return CircularProgressIndicator();
+            }),
           ),
           SafeArea(
               child: Center(
                 child: Column(
                   children: [
-                    SizedBox(height: 150,),
+                    SizedBox(height: 125,),
                     Image.asset("res/icons/title.png"),
                     SizedBox(height: 70,),
                     ElevatedButton(onPressed: (){Navigator.of(context).pop("/");Navigator.pushNamed(context, "/lvlSelector");}, style: ButtonStyle(backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white),), child:Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 10),

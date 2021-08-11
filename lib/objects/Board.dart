@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:fencegate/objects/Section.dart';
@@ -10,7 +9,7 @@ import 'package:flutter/services.dart';
 class Board {
 
   // In spite of the variable type 'dynamic', really it's variable true type is Section
-  late final List<List<dynamic>> _sections;
+  late List<List<dynamic>> _sections;
   static const double _BOARD_SIZE=320;
   late final double pieceSize;
 
@@ -69,6 +68,7 @@ class Board {
 
     if(_sections.isEmpty) {
       _controller.add(Column(children: [],));
+      return;
     }
 
     List<List<Widget>> sect = List.generate(_sections.length, (index) => List.generate(_sections[index].length, (i) => (_sections[index][i] as Section).getWidget()));
@@ -79,14 +79,16 @@ class Board {
   }
 
   void win() {
+    block();
+    _sections=List.empty();
+    _controller.close();
+  }
 
-    for(var sec in _sections){
-      for(var s in sec){
-        (s as Section).block();
+  void block() {
+    for(List sec in _sections){
+      for(Section s in sec){
+
       }
     }
-
-    _controller.close();
-
   }
 }

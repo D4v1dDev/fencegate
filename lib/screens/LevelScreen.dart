@@ -12,6 +12,7 @@ class LevelScreen extends StatefulWidget {
 class _LevelScreenState extends State<LevelScreen> {
   @override
   Widget build(BuildContext context) {
+    Board b=Board.fromLevelNumber(LevelSelectorScreen.selectedLevel);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -19,7 +20,7 @@ class _LevelScreenState extends State<LevelScreen> {
       ),
       body: SafeArea(
         child: Center(
-          child: StreamBuilder(stream : Board.fromLevelNumber(LevelSelectorScreen.selectedLevel).controller.stream,builder: (c, s) {
+          child: StreamBuilder(stream : b.controller.stream,builder: (c, s) {
                   //Executed when the level can't be loaded correctly
                   if(!s.hasData){
                     return CircularProgressIndicator();
@@ -44,6 +45,8 @@ class _LevelScreenState extends State<LevelScreen> {
                                 setState(() {
                                   if(!LevelSelectorScreen.nextLevel()){
                                     Navigator.pop(context);
+                                  }else{
+                                    b=new Board.fromLevelNumber(LevelSelectorScreen.selectedLevel);
                                   }
                                 });
                               },
