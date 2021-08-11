@@ -59,10 +59,10 @@ class Section {
   Image chooseImage(){
     switch(_type){
       case TYPE_PIECE_CORNER:
-        return Image.asset("$RUTA$_type$_direction.png",fit: BoxFit.cover);
+        return Image.asset("$RUTA${_type}0.png",fit: BoxFit.cover);
       case TYPE_PIECE_DOUBLE_CORNER:
       case TYPE_PIECE_RECT:
-        return Image.asset("$RUTA$_type${_direction%2}.png",fit: BoxFit.cover);
+        return Image.asset("$RUTA${_type}0.png",fit: BoxFit.cover);
       default:
         return (Image.asset("${RUTA}2.png",fit: BoxFit.cover,));
     }
@@ -71,7 +71,9 @@ class Section {
   Widget getWidget() {
 
     return SizedBox(
-      child: IconButton(
+      child: RotatedBox(
+        quarterTurns: _direction,
+        child: IconButton(
           onPressed: () {
             if(!canRotate) return;
             rotate();
@@ -82,6 +84,7 @@ class Section {
           },
           padding: EdgeInsets.zero,
           icon: imagen),
+      ),
       width: board.pieceSize,
       height: board.pieceSize,
     );
