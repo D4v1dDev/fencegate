@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 class Board {
 
   // In spite of the variable type 'dynamic', really it's variable true type is Section
-  late List<List<dynamic>> _sections;
+  late final List<List<dynamic>> _sections;
   static const double _BOARD_SIZE=320;
   late final double pieceSize;
 
@@ -80,14 +80,13 @@ class Board {
 
   void win() {
     block();
-    _sections=List.empty();
     _controller.close();
   }
 
   void block() {
     for(List sec in _sections){
       for(Section s in sec){
-
+        s.block();
       }
     }
   }
