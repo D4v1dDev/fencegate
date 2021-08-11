@@ -46,7 +46,7 @@ class _LevelScreenState extends State<LevelScreen> {
                                   if(!LevelSelectorScreen.nextLevel()){
                                     Navigator.pop(context);
                                   }else{
-                                    b=new Board.fromLevelNumber(LevelSelectorScreen.selectedLevel);
+                                    Navigator.popAndPushNamed(context, "/lvl");
                                   }
                                 });
                               },

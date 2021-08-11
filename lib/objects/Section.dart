@@ -19,7 +19,7 @@ class Section {
 
   final Board board;
 
-  late bool canRotate=false;
+  late bool _canRotate=false;
   late Image imagen;
   
   Section.fromJSON(Map line, this.board) {
@@ -28,7 +28,7 @@ class Section {
     
     shuffle();
     imagen=chooseImage();
-    canRotate=true;
+    _canRotate=true;
   }
 
   bool isCorrectlyPlaced(){
@@ -54,7 +54,6 @@ class Section {
       _direction = Random().nextInt(3);
     }while(_direction==_correctDirection);
   }
-
   
   Image chooseImage(){
     switch(_type){
@@ -69,42 +68,28 @@ class Section {
   }
   
   Widget getWidget() {
-
     return SizedBox(
-      child: MovingIcon(this),
+      child: AnimatedSection(this),
       width: board.pieceSize,
       height: board.pieceSize,
     );
   }
 
   void block() {
-    canRotate = false;
+    _canRotate = false;
   }
 }
-/*
-IconButton(
-        onPressed: () {
-            if(!canRotate) return;
-            rotate();
-            board.build();
-            if(board.isCorrect()){
-              board.win();
-            }
-          },
-          padding: EdgeInsets.zero,
-          icon: imagen),
- */
 
-class MovingIcon extends StatefulWidget {
-  const MovingIcon(this._s,{Key? key}) : super(key: key);
+class AnimatedSection extends StatefulWidget {
+  const AnimatedSection(this._s,{Key? key}) : super(key: key);
 
   final Section _s;
   
   @override
-  State<MovingIcon> createState() => _MovingIconState(_s);
+  State<AnimatedSection> createState() => _AnimatedSectionState(_s);
 }
 
-class _MovingIconState extends State<MovingIcon>
+class _AnimatedSectionState extends State<AnimatedSection>
     with TickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     duration: const Duration(milliseconds: 300),
@@ -119,7 +104,7 @@ class _MovingIconState extends State<MovingIcon>
 
   final Section _s;
 
-  _MovingIconState(this._s);
+  _AnimatedSectionState(this._s);
 
   @override
   void dispose() {
@@ -133,18 +118,18 @@ class _MovingIconState extends State<MovingIcon>
       turns: _animation,
       child: IconButton(
           onPressed: () {
-            if (!_s.canRotate) return;
-            _s.canRotate = false;
+            if (!_s._canRotate) return;
+            _s._canRotate = false;
             _controller.forward(from: 0).whenComplete(() {
-              _s.canRotate = true;
-              setState(() {
-                _s.rotate();
-                _controller.value=0;
-              });
-              _s.board.build();
-              if (_s.board.isCorrect()) {
-                _s.board.win();
-              }
+                _s._canRotate = true;
+                setState(() {
+                    _s.rotate();
+                    _controller.value=0;
+                });
+                _s.board.build();
+                if (_s.board.isCorrect()) {
+                  _s.board.win();
+                }
             });
           },
           padding: EdgeInsets.zero,

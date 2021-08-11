@@ -9,14 +9,15 @@ import 'package:flutter/services.dart';
 class Board {
 
   // In spite of the variable type 'dynamic', really it's variable true type is Section
-  late List<List<dynamic>> _sections;
+  late final List<List<dynamic>> _sections;
   static const double _BOARD_SIZE=320;
   late final double pieceSize;
 
-  StreamController<Widget> _controller = StreamController<Widget>();
+  late final StreamController<Widget> _controller ;
   StreamController<Widget> get controller => _controller;
 
   Board.fromLevelNumber(int num) {
+    _controller = StreamController<Widget>();
      rootBundle.loadString("res/level/lvl$num").then((value) {
        List<dynamic> sectionsArray = jsonDecode(value)["sections"];
        List<Section> sect = List.generate(sectionsArray.length, (index) => Section.fromJSON(sectionsArray[index],this));
@@ -80,14 +81,13 @@ class Board {
 
   void win() {
     block();
-    _sections=List.empty();
     _controller.close();
   }
 
   void block() {
     for(List sec in _sections){
       for(Section s in sec){
-
+          s.block();
       }
     }
   }

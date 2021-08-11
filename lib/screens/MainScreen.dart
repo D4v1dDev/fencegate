@@ -17,7 +17,7 @@ class MainScreen extends StatelessWidget {
           Center(
             child: StreamBuilder(stream:board.controller.stream,builder: (c,s){
               Future.delayed(Duration(seconds: Random().nextInt(3)+2)).whenComplete(() => board.shuffle());
-              if(s.hasData){
+              if(s.connectionState==ConnectionState.active){
                 board.block();
                 return s.data as Widget;
               }
