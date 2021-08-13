@@ -8,18 +8,25 @@ class Database {
       firebase_storage.FirebaseStorage.instance;
 
   static Future<void> downloadFileExample() async {
-    int i =0;
     try {
       storage.ref("level/").list().then((value) => print(value.items.length));
       await storage.ref('level/').list().then((value) {
         value.items.forEach((element) async {
-          i++;
-          File f = File("${Data.level_dir.path}/lvl$i");
+          File f = File("${Data.level_dir.path}/${element.name}");
           if(!await f.exists()){
             await f.create();
             element.writeToFile(f);
             print("File ${f.path} created");
             return;
+          }else{
+            /*TODO
+            DELETE the content in else when finish the database bugfixing
+            this line just recharge all the files and that makes that the
+            database reads increase.
+             */
+            await f.delete();
+            await f.create();
+            element.writeToFile(f);
           }
           print("File ${f.path} no created, already exist");
         });
