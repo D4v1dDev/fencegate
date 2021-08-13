@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:fencegate/main.dart';
 import 'package:flutter/material.dart';
 
 class LevelSelectorScreen extends StatelessWidget {
@@ -9,16 +12,13 @@ class LevelSelectorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         body: SafeArea(
           child: Column(
             children: [
               Image.asset("res/icons/title.png"),
               Expanded(
-                child: ListView.builder(itemCount: 10,itemBuilder: (c,i) {
-
-
+                child: ListView.builder(itemCount: Data.LEVEL_LENGTH,itemBuilder: (c,i) {
                   return Padding(padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
                       child: ElevatedButton(
                           onPressed: () {

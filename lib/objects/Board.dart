@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
+import 'package:fencegate/main.dart';
 import 'package:fencegate/objects/Section.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +20,7 @@ class Board {
 
   Board.fromLevelNumber(int num) {
     _controller = StreamController<Widget>();
-     rootBundle.loadString("res/level/lvl$num").then((value) {
+     File(Data.levels[num-1].path).readAsString().then((value) {
        List<dynamic> sectionsArray = jsonDecode(value)["sections"];
        List<Section> sect = List.generate(sectionsArray.length, (index) => Section.fromJSON(sectionsArray[index],this));
 
