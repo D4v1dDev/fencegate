@@ -13,9 +13,7 @@ import 'screens/MainScreen.dart';
 void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await Data.init();
-  Database.downloadFileExample();
+  await Data.init().whenComplete(()async => await Firebase.initializeApp().whenComplete(() => Database.downloadNewLevels()));
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     title: "Fencegate",

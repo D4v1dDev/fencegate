@@ -20,7 +20,7 @@ class Board {
 
   Board.fromLevelNumber(int num) {
     _controller = StreamController<Widget>();
-     File(Data.levels[num-1].path).readAsString().then((value) {
+     File('${Data.level_dir.path}/lvl$num').readAsString().then((value) {
        List<dynamic> sectionsArray = jsonDecode(value)["sections"];
        List<Section> sect = List.generate(sectionsArray.length, (index) => Section.fromJSON(sectionsArray[index],this));
 
