@@ -13,10 +13,30 @@ class Database {
         List<firebase_storage.Reference> items =value.items;
 
         print("${Data.LEVEL_LENGTH} ${items.length}");
-        if(items.length<=Data.LEVEL_LENGTH){
+        if(items.length==Data.LEVEL_LENGTH){
           return;
         }
 
+        if(items.length<Data.LEVEL_LENGTH){
+          List<Directory> directories = Data.levels;
+          List<Directory> da = List.empty(growable: true);
+          for(firebase_storage.Reference ref in items){
+            for(Directory dir in directories){
+                if(int.parse(ref.name.substring(3)) == int.parse(_getNamefromDirectory(dir).substring(3))){
+                  da.add(dir);
+                }
+            }
+          }
+          da.forEach((element) {
+            directories.remove(element);
+          });
+
+          directories.forEach((element) {
+            File(element.path).delete();
+          });
+          await Data.reload();
+          return;
+        }
 
         for(firebase_storage.Reference element in items) {
           if(int.parse(element.name.substring(3)) <= Data.LEVEL_LENGTH){
@@ -32,11 +52,14 @@ class Database {
           }
           print("File ${f.path} no created, already exist");
         }
-
+        await Data.reload();
       });
     } on firebase_storage.FirebaseException catch (e) {
         print(e);
     }
   }
 
+  static String _getNamefromDirectory(Directory dir) {
+    return dir.path.replaceAll(dir.parent.path, "").substring(1);
+  }
 }

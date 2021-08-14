@@ -28,16 +28,20 @@ void main() async{
 
 class Data {
 
-  static late final int LEVEL_LENGTH;
+  static late int LEVEL_LENGTH;
 
   static late final Directory main_dir;
   static late final Directory level_dir;
-  static late final List<Directory> levels;
+  static late List<Directory> levels;
 
   static Future<void> init() async {
     main_dir = await getApplicationDocumentsDirectory();
     level_dir = Directory("${main_dir.path}/level");
 
+    await reload();
+  }
+
+  static reload() async {
     var temp = await level_dir.list().toList();
 
     levels= List.generate(temp.length, (index) => Directory(temp[index].path));
@@ -50,5 +54,4 @@ class Data {
       }
     });
   }
-
 }
