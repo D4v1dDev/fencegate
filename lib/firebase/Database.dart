@@ -7,27 +7,29 @@ class Database {
   static final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
 
+  //This function synchronize the base and database levels.
   static Future<void> downloadNewLevels() async {
     try {
       await storage.ref('level/').list().then((value) async {
         List<firebase_storage.Reference> items =value.items;
 
-        print("${Data.LEVEL_LENGTH} ${items.length}");
         if(items.length==Data.LEVEL_LENGTH){
+          print("Same directories in base and database. Downloaded 0 files");
           return;
         }
 
         if(items.length<Data.LEVEL_LENGTH){
+          print("More directories in base than in database. Removing corresponding files");
           List<Directory> directories = Data.levels;
-          List<Directory> da = List.empty(growable: true);
+          List<Directory> commonBaseDataBaseDirectories = List.empty(growable: true);
           for(firebase_storage.Reference ref in items){
             for(Directory dir in directories){
                 if(int.parse(ref.name.substring(3)) == int.parse(_getNamefromDirectory(dir).substring(3))){
-                  da.add(dir);
+                  commonBaseDataBaseDirectories.add(dir);
                 }
             }
           }
-          da.forEach((element) {
+          commonBaseDataBaseDirectories.forEach((element) {
             directories.remove(element);
           });
 
@@ -38,8 +40,9 @@ class Database {
           return;
         }
 
+        print("More files in database than in base. Downloading new files.");
         for(firebase_storage.Reference element in items) {
-          if(int.parse(element.name.substring(3)) <= Data.LEVEL_LENGTH){
+          if(isInStorage(element)) {
             continue;
           }
           print("Downloading file ${element.name}");
@@ -48,7 +51,7 @@ class Database {
             await f.create();
             element.writeToFile(f);
             print("File ${f.path} created");
-            return;
+            continue;
           }
           print("File ${f.path} no created, already exist");
         }
@@ -59,7 +62,18 @@ class Database {
     }
   }
 
+  //Used to get the name of a location or a directory
   static String _getNamefromDirectory(Directory dir) {
     return dir.path.replaceAll(dir.parent.path, "").substring(1);
+  }
+
+  //Used to know if an element is in local storage or no.
+  static bool isInStorage(firebase_storage.Reference element) {
+    for(int i = 0;i<Data.LEVEL_LENGTH;i++){
+      if(int.parse(element.name.substring(3)) == int.parse(_getNamefromDirectory(Data.levels[i]).substring(3))){
+        return true;
+      } 
+    }
+    return false;
   }
 }

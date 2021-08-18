@@ -28,7 +28,7 @@ void main() async{
 
 class Data {
 
-  static late int LEVEL_LENGTH;
+  static int LEVEL_LENGTH=0;
 
   static late final Directory main_dir;
   static late final Directory level_dir;
@@ -42,16 +42,19 @@ class Data {
   }
 
   static reload() async {
-    var temp = await level_dir.list().toList();
 
-    levels= List.generate(temp.length, (index) => Directory(temp[index].path));
     level_dir.exists().then((exist) async {
       if(exist){
         LEVEL_LENGTH=await level_dir.list().length;
       }else{
-        level_dir.create();
+        await level_dir.create();
         LEVEL_LENGTH=0;
       }
     });
+
+    var temp = await level_dir.list().toList();
+
+    levels= List.generate(temp.length, (index) => Directory(temp[index].path));
+
   }
 }

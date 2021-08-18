@@ -6,7 +6,6 @@ import 'dart:math';
 import 'package:fencegate/main.dart';
 import 'package:fencegate/objects/Section.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 
 class Board {
 
