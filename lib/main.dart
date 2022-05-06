@@ -28,33 +28,76 @@ void main() async{
 
 class Data {
 
-  static int LEVEL_LENGTH=0;
+  static int levelLength=0;
 
-  static late final Directory main_dir;
-  static late final Directory level_dir;
+  static late final Directory mainDir;
+  static late final Directory levelDir;
   static late List<Directory> levels;
 
+  //LANGUAGES
+  //0:English
+  //1:Spanish
+  //Index                                  0        1           2             3         4               5                         6                   7
+  static const List<List<String>> _TEXT = [["Play", "Settings",  "Access to ",  "Level",  "Winner!",      "Return to level page", "Next level",       "Language"],
+                                          ["Jugar", "Opciones", "Acceder a ", "Nivel",  "¡Has ganado!",   "Volver",               "Siguiente nivel",  "Idioma"]];
+  static int _language = 1;
+  static Image languageIcon=Image.asset("res/icons/lang/sp.png");
+
   static Future<void> init() async {
-    main_dir = await getApplicationDocumentsDirectory();
-    level_dir = Directory("${main_dir.path}/level");
+    mainDir = await getApplicationDocumentsDirectory();
+    levelDir = Directory("${mainDir.path}/level");
 
     await reload();
   }
 
   static reload() async {
 
-    level_dir.exists().then((exist) async {
+    levelDir.exists().then((exist) async {
       if(exist){
-        LEVEL_LENGTH=await level_dir.list().length;
+        levelLength=await levelDir.list().length;
       }else{
-        await level_dir.create();
-        LEVEL_LENGTH=0;
+        await levelDir.create();
+        levelLength=0;
       }
     });
 
-    var temp = await level_dir.list().toList();
+    var temp = await levelDir.list().toList();
 
     levels= List.generate(temp.length, (index) => Directory(temp[index].path));
 
+  }
+
+  static void changeLanguage() {
+    _language++;
+    _language%=_TEXT.length;
+    switch(_language){
+      case 0:
+        languageIcon = Image.asset('res/icons/lang/eu.png');
+        break;
+      case 1:
+        languageIcon = Image.asset('res/icons/lang/sp.png');
+    }
+  }
+  
+  static String getText(final int index){
+    return _TEXT[_language][index];
+  }
+
+  static Route _createRoute(final Widget w) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => w,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
   }
 }

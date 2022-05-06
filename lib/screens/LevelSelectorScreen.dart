@@ -1,7 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
-
-import 'package:fencegate/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class LevelSelectorScreen extends StatelessWidget {
   LevelSelectorScreen({Key? key}) : super(key: key);
@@ -12,26 +12,40 @@ class LevelSelectorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         body: SafeArea(
-          child: Column(
-            children: [
-              Image.asset("res/icons/title.png"),
-              Expanded(
-                child: ListView.builder(itemCount: Data.LEVEL_LENGTH,itemBuilder: (c,i) {
-                  return Padding(padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
+            child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+                  itemCount: 28,
+                  itemBuilder: (c,index){
+                    Future<Color> ca =_isCompleted(index).then((value) async {
+                      if(index == 0 || value){
+                        return Colors.lightGreen;
+                      }
+                      if(await _isCompleted(index+1)){
+                        return Colors.yellow;
+                      }
+                      return Colors.grey;
+                    });
+                    Color c = Colors.grey;
+                    ca.then((value) => c=value);
+                    return Padding(
+                      padding: EdgeInsets.all(5),
                       child: ElevatedButton(
-                          onPressed: () {
-                            _selectedLevel = i + 1;
-                            Navigator.pushNamed(context, "/lvl");
-                            },
-                          child: Text("Acceder a nivel ${i + 1}")));
+                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(c)),
+                        onPressed: () async {
+                          if(index==0 || await _isCompleted(index)){
+                              _selectedLevel = index+1;
+                              Navigator.pushNamed(context, '/lvl');
+                          }
+                        },
+                        child: Text("#${index+1}"),
+                      ),
+                    );
                   }
-                ),
-              )
-            ],
           ),
-        )
+        ),
     );
   }
 
@@ -41,5 +55,10 @@ class LevelSelectorScreen extends StatelessWidget {
     }
     _selectedLevel++;
     return true;
+  }
+
+  Future<bool> _isCompleted(int index) async {
+    if(index == 0) return false;
+    return await rootBundle.loadString('res/level/lvl$index').then((value) => jsonDecode(value)["completed"]);
   }
 }

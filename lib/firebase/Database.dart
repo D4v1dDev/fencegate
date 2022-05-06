@@ -2,8 +2,9 @@ import 'dart:io';
 
 import 'package:fencegate/main.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
+//This class will be used in the future, but for now, it wont be used
 class Database {
+
   static final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
 
@@ -13,12 +14,12 @@ class Database {
       await storage.ref('level/').list().then((value) async {
         List<firebase_storage.Reference> items =value.items;
 
-        if(items.length==Data.LEVEL_LENGTH){
+        if(items.length==Data.levelLength){
           print("Same directories in base and database. Downloaded 0 files");
           return;
         }
 
-        if(items.length<Data.LEVEL_LENGTH){
+        if(items.length<Data.levelLength){
           print("More directories in base than in database. Removing corresponding files");
           List<Directory> directories = Data.levels;
           List<Directory> commonBaseDataBaseDirectories = List.empty(growable: true);
@@ -46,7 +47,7 @@ class Database {
             continue;
           }
           print("Downloading file ${element.name}");
-          File f = File("${Data.level_dir.path}/${element.name}");
+          File f = File("${Data.levelDir.path}/${element.name}");
           if(!await f.exists()){
             await f.create();
             element.writeToFile(f);
@@ -69,7 +70,7 @@ class Database {
 
   //Used to know if an element is in local storage or no.
   static bool isInStorage(firebase_storage.Reference element) {
-    for(int i = 0;i<Data.LEVEL_LENGTH;i++){
+    for(int i = 0;i<Data.levelLength;i++){
       if(int.parse(element.name.substring(3)) == int.parse(_getNamefromDirectory(Data.levels[i]).substring(3))){
         return true;
       } 

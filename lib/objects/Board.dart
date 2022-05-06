@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:fencegate/main.dart';
 import 'package:fencegate/objects/Section.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
 class Board {
 
@@ -17,9 +18,9 @@ class Board {
   late final StreamController<Widget> _controller ;
   StreamController<Widget> get controller => _controller;
 
-  Board.fromLevelNumber(int num) {
+  Board.fromLevelNumberInDatabase(int num) {
     _controller = StreamController<Widget>();
-     File('${Data.level_dir.path}/lvl$num').readAsString().then((value) {
+     File('${Data.levelDir.path}/lvl$num').readAsString().then((value) {
        List<dynamic> sectionsArray = jsonDecode(value)["sections"];
        List<Section> sect = List.generate(sectionsArray.length, (index) => Section.fromJSON(sectionsArray[index],this));
 
@@ -27,6 +28,19 @@ class Board {
        pieceSize=_BOARD_SIZE/_sections.length;
        build();
      });
+  }
+
+  Board.fromLevelNumber(int num){
+    _controller = StreamController<Widget>();
+
+    rootBundle.loadString("res/level/lvl$num").then((value) {
+      List<dynamic> sectionsArray = jsonDecode(value)["sections"];
+      List<Section> sect = List.generate(sectionsArray.length, (index) => Section.fromJSON(sectionsArray[index],this));
+
+      _sections=linearToSquareList(sect);
+      pieceSize=_BOARD_SIZE/_sections.length;
+      build();
+    });
   }
 
   bool isCorrect(){
@@ -49,7 +63,7 @@ class Board {
     build();
   }
 
-  List<List<dynamic>> linearToSquareList(List ls){
+  static List<List<dynamic>> linearToSquareList(List ls){
 
     List<List> a = List.empty(growable: true);
 

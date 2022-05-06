@@ -2,6 +2,8 @@ import 'package:fencegate/objects/Board.dart';
 import 'package:fencegate/screens/LevelSelectorScreen.dart';
 import 'package:flutter/material.dart';
 
+import '../main.dart';
+
 class LevelScreen extends StatefulWidget {
   const LevelScreen({Key? key}) : super(key: key);
 
@@ -12,11 +14,11 @@ class LevelScreen extends StatefulWidget {
 class _LevelScreenState extends State<LevelScreen> {
   @override
   Widget build(BuildContext context) {
-    Board b=Board.fromLevelNumber(LevelSelectorScreen.selectedLevel);
+    Board b=Board.fromLevelNumberInDatabase(LevelSelectorScreen.selectedLevel);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Level #${LevelSelectorScreen.selectedLevel}"),
+        title: Text("${Data.getText(3)} #${LevelSelectorScreen.selectedLevel}"),
       ),
       body: SafeArea(
         child: Center(
@@ -33,13 +35,13 @@ class _LevelScreenState extends State<LevelScreen> {
                       children: [
                         s.data as Widget,
                         AlertDialog(
-                          title: Text("Level #${LevelSelectorScreen.selectedLevel}"),
+                          title: Text("${Data.getText(3)} #${LevelSelectorScreen.selectedLevel}"),
                           elevation: 5,
-                          content: Text("You Won!"),
+                          content: Text("${Data.getText(4)}"),
                           actions: [
                             ElevatedButton(
                               onPressed: ()=>Navigator.pop(context),
-                              child: Text("Return To Level Page"),),
+                              child: Text("${Data.getText(5)}"),),
                             ElevatedButton(
                               onPressed: () {
                                 setState(() {
@@ -50,7 +52,7 @@ class _LevelScreenState extends State<LevelScreen> {
                                   }
                                 });
                               },
-                              child: Text("Next Level"),)
+                              child: Text("${Data.getText(6)}"),)
                           ],
                         ),
                       ],

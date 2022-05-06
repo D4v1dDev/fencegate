@@ -1,30 +1,19 @@
-import 'dart:math';
-
-import 'package:fencegate/objects/Board.dart';
 import 'package:flutter/material.dart';
 
-class MainScreen extends StatelessWidget {
+import '../main.dart';
+
+class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
   @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  @override
   Widget build(BuildContext context) {
-
-    //var board = Board.fromLevelNumber(2);
-
     return Scaffold(
-      body: Stack(
-        children: [
-          Center(
-            child:  CircularProgressIndicator()/*StreamBuilder(stream:board.controller.stream,builder: (c,s){
-              Future.delayed(Duration(seconds: Random().nextInt(3)+2)).whenComplete(() => board.shuffle());
-              if(s.connectionState==ConnectionState.active){
-                board.block();
-                return s.data as Widget;
-              }
-              return CircularProgressIndicator();
-            }),*/
-          ),
-          SafeArea(
+      body:SafeArea(
               child: Center(
                 child: Column(
                   children: [
@@ -32,17 +21,14 @@ class MainScreen extends StatelessWidget {
                     Image.asset("res/icons/title.png"),
                     SizedBox(height: 80,),
                     ElevatedButton(onPressed: (){Navigator.of(context).pop("/");Navigator.pushNamed(context, "/lvlSelector");}, style: ButtonStyle(backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white),), child:Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-                        child: Text("JUGAR",style: TextStyle(fontSize: 30,color: Colors.black),)),),
+                        child: Text("${Data.getText(0).toUpperCase()}",style: TextStyle(fontSize: 30,color: Colors.black),)),),
                     SizedBox(height: 20,),
-                    ElevatedButton(onPressed: (){Navigator.of(context).pop("/settings");}, style: ButtonStyle(backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white),), child:Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-                        child: Text("OPCIONES",style: TextStyle(fontSize: 30,color: Colors.black),)),),
+                    ElevatedButton(onPressed: (){Navigator.of(context).popAndPushNamed("/opts");}, style: ButtonStyle(backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white),), child:Padding(padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                        child: Text("${Data.getText(1).toUpperCase()}",style: TextStyle(fontSize: 30,color: Colors.black),)),),
                   ],
                 ),
               ),
           ),
-        ],
-      ),
     );
   }
 }
-

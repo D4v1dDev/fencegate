@@ -26,7 +26,7 @@ dependencies:
   #Firebase Core Flutter SDK
   firebase_core: ^1.4.0
   #firebase_auth: ^0.14.0+5
-  firebase_storage: 10.0.1
+  firebase_storage: ^10.2.15
 
   #Path Provider
   path_provider: ^2.0.2
@@ -53,6 +53,7 @@ flutter:
     - res/icons/
     - res/icons/pieces/
     - res/level/
+    - res/icons/lang/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

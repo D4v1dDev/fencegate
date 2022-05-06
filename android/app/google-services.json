@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "398227505095",
-    "firebase_url": "https://fencegate-9cbe1-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "fencegate-9cbe1",
-    "storage_bucket": "fencegate-9cbe1.appspot.com"
+    "project_number": "539121411868",
+    "project_id": "fencegate-1d95e",
+    "storage_bucket": "fencegate-1d95e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:398227505095:android:cbda42b8a353d79826a3e2",
+        "mobilesdk_app_id": "1:539121411868:android:f66e7638a9cf6cfe3ffcd9",
         "android_client_info": {
           "package_name": "com.djpapps.fencegate"
         }
       },
       "oauth_client": [
         {
-          "client_id": "398227505095-f4ekhev2v1o6lalhdc25basqs1kd0ej1.apps.googleusercontent.com",
+          "client_id": "539121411868-6te79stok4duc5i5t54ecjboik8ohh94.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.djpapps.fencegate",
+            "certificate_hash": "570e8792aa3bd70df00eb8d9e4e5083638361a70"
+          }
+        },
+        {
+          "client_id": "539121411868-vd4b7dj4ra6b99c8r0iugc5ranh2t36m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA24ET-zTnzW9PfCgwGXHYQ0kr2lZJT56k"
+          "current_key": "AIzaSyCPR1LLzeNA8bMfAZr-vNME4F3_gX5ovhE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "398227505095-f4ekhev2v1o6lalhdc25basqs1kd0ej1.apps.googleusercontent.com",
+              "client_id": "539121411868-vd4b7dj4ra6b99c8r0iugc5ranh2t36m.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
